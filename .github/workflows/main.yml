@@ -27,7 +27,7 @@ jobs:
       run: |
         # 2. 核心修改：添加 --target-arch universal2
         # 这会生成一个"通用程序"，同时支持 Intel 和 Apple Silicon 芯片
-        pyinstaller --noconsole --onefile --target-arch universal2 --name="体检转换工具" app.py
+        pyinstaller --noconsole --onefile --target-arch universal2 --name="体检转换工具" main.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
