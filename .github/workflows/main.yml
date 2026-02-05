@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-    # 使用最新的 macOS 环境
-    runs-on: macos-latest
+    # 🔴 核心修改：指定使用 macOS 12 (最稳定的旧版环境)
+    runs-on: macos-12
 
     steps:
     - uses: actions/checkout@v4
@@ -17,8 +17,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.10"
-        # 🔴 关键修改：强制使用 x64 (Intel) 架构的 Python
-        # 这样 GitHub 会通过 Rosetta 模拟运行 Intel 环境
+        # 强制使用 x64 架构，确保生成的软件是 Intel 版的
+        # 这样你的 Intel Mac 和朋友的 M1 Mac 都能跑
         architecture: "x64"
 
     - name: Install dependencies
@@ -28,12 +28,11 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        # 回归最简单的打包命令，去掉复杂的架构参数
-        # 因为 Python 本身已经是 Intel 版的了，生成的软件自然也是 Intel 版
+        # 最简单的打包命令
         pyinstaller --noconsole --onefile --name="体检转换工具" main.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Mac-App-Intel
+        name: Mac-App-Final
         path: dist/体检转换工具
