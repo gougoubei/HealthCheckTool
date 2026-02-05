@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
-
+    runs-on: macos-13
+    
     steps:
     - uses: actions/checkout@v4  # 已升级到 v4
 
