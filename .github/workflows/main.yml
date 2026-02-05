@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    # 1. 使用最新的 macOS 服务器 (ARM架构)
+    # 使用最新的 macOS 环境
     runs-on: macos-latest
 
     steps:
@@ -17,6 +17,9 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.10"
+        # 🔴 关键修改：强制使用 x64 (Intel) 架构的 Python
+        # 这样 GitHub 会通过 Rosetta 模拟运行 Intel 环境
+        architecture: "x64"
 
     - name: Install dependencies
       run: |
@@ -25,12 +28,12 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        # 2. 核心修改：添加 --target-arch universal2
-        # 这会生成一个"通用程序"，同时支持 Intel 和 Apple Silicon 芯片
-        pyinstaller --noconsole --onefile --target-arch universal2 --name="体检转换工具" main.py
+        # 回归最简单的打包命令，去掉复杂的架构参数
+        # 因为 Python 本身已经是 Intel 版的了，生成的软件自然也是 Intel 版
+        pyinstaller --noconsole --onefile --name="体检转换工具" main.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Mac-App-Universal
+        name: Mac-App-Intel
         path: dist/体检转换工具
