@@ -7,12 +7,10 @@ on:
 
 jobs:
   build:
-    # 🔴 核心修改：指定使用 macOS 12 (最稳定的旧版环境)
-    runs-on: macos-12
+    runs-on: macos-15-intel # 🔴 修复：使用了最新的 Intel 专用环境
 
     steps:
     - uses: actions/checkout@v4
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
