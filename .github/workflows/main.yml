@@ -7,15 +7,16 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
-    
+    # 1. 使用最新的 macOS 服务器 (ARM架构)
+    runs-on: macos-latest
+
     steps:
-    - uses: actions/checkout@v4  # 已升级到 v4
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v5 # 已升级到 v5
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.9"
+        python-version: "3.10"
 
     - name: Install dependencies
       run: |
@@ -24,12 +25,12 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        # 你的应用名字
-        pyinstaller --noconsole --onefile --name="体检转换工具" main.py
+        # 2. 核心修改：添加 --target-arch universal2
+        # 这会生成一个"通用程序"，同时支持 Intel 和 Apple Silicon 芯片
+        pyinstaller --noconsole --onefile --target-arch universal2 --name="体检转换工具" app.py
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4 # 🔴 关键修复：这里改成了 v4
+      uses: actions/upload-artifact@v4
       with:
-        name: Mac-App-Download
+        name: Mac-App-Universal
         path: dist/体检转换工具
-        # v4 版本默认会把你的文件压缩成 zip 下载，非常方便
